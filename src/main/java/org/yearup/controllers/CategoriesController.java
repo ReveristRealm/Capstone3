@@ -19,14 +19,13 @@ import java.util.List;
 @CrossOrigin
 public class CategoriesController
 {
-    @Autowired
+
     private CategoryDao categoryDao;
-    @Autowired
     private ProductDao productDao;
 
 
     // create an Autowired controller to inject the categoryDao and ProductDao (DONE)
-
+    @Autowired
     public CategoriesController(CategoryDao catDao, ProductDao proDao)  {
         this.categoryDao = catDao;
         this.productDao = proDao;
