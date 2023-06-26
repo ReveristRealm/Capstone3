@@ -89,7 +89,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
             }
             } catch (Exception e) {
-                System.out.println("Hi");
+                System.out.println("Whatever you did, did not work");
             }
 
             return category;
@@ -98,7 +98,18 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public void update(int categoryId, Category category)
     {
-       String query ="UPDATE categories SET WHERE ";
+       String query = "UPDATE categories SET name = ?, description = ? WHERE category_id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);
+        ){
+            stmt.setString(1,category.getName());
+            stmt.setString(2,category.getDescription());
+            stmt.setInt(3,category.getCategoryId());
+
+            stmt.executeUpdate();
+        }catch(Exception e){
+            System.out.println("Whatever you did, did not work");
+        }
     }
 
     @Override
