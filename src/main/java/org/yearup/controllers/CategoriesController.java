@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.CategoryDao;
 import org.yearup.data.ProductDao;
 import org.yearup.models.Category;
@@ -47,7 +49,14 @@ public class CategoriesController
     @PreAuthorize("permitAll()")
     public Category getById(@PathVariable int categoryId)
     {
-        return categoryDao.getById(categoryId);
+        if(categoryDao.getById(categoryId)== null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Yeaaaa no");
+        }
+        try {
+            return categoryDao.getById(categoryId);
+        }catch(HttpClientErrorException.NotFound e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Yep no");
+        }
     }
 
     // the url to return all products in category 1 would look like this
@@ -57,8 +66,8 @@ public class CategoriesController
     public List<Product> getProductsById(@PathVariable int categoryId)
     {
         // get a list of product by categoryId (DONE)
-        //return productDao.listByCategoryId(categoryId);
-        return null;
+        return productDao.listByCategoryId(categoryId);
+
     }
 
     // add annotation to call this method for a POST action (DONE)
